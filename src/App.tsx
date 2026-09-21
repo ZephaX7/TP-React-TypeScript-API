@@ -6,7 +6,6 @@ import Characters from './pages/Characters'
 import Favorites from './pages/Favorites'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
-import SuggestCharacter from './pages/SuggestCharacter'
 import './App.css'
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
           <Route path="/characters" element={<Characters />} />
           <Route path="/characters/:id" element={<CharacterDetails />} />
           <Route path="/favorites" element={<Favorites />} />
-          <Route path="/suggest" element={<SuggestCharacter />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

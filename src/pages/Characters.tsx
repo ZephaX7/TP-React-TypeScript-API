@@ -5,48 +5,42 @@ type Character = {
   id: number
   name: string
   species: string
-  status: string
   image: string
-}
-
-type ApiResponse = {
-  results: Character[]
 }
 
 export default function Characters() {
   const [characters, setCharacters] = useState<Character[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    const fetchCharacters = async () => {
-      try {
-        setLoading(true)
-        setError(null)
+    async function getCharacters() {
+      setLoading(true)
+      setError('')
 
+      try {
         const response = await fetch(
           `https://rickandmortyapi.com/api/character?name=${search}`
         )
 
         if (!response.ok) {
           setCharacters([])
+          setLoading(false)
           return
         }
 
-        const data: ApiResponse = await response.json()
+        const data = await response.json()
 
         setCharacters(data.results)
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : 'Une erreur est survenue'
-        )
-      } finally {
-        setLoading(false)
+      } catch {
+        setError('Erreur pendant le chargement')
       }
+
+      setLoading(false)
     }
 
-    fetchCharacters()
+    getCharacters()
   }, [search])
 
   return (
@@ -58,23 +52,23 @@ export default function Characters() {
         type="text"
         placeholder="Rechercher un personnage..."
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
       />
 
       {loading && <p>Chargement...</p>}
 
       {error && <p>{error}</p>}
 
-      {!loading && !error && characters.length === 0 && (
+      {!loading && characters.length === 0 && (
         <p>Aucun personnage trouvé.</p>
       )}
 
       <div className="card-grid">
         {characters.map((character) => (
           <Link
-            key={character.id}
-            to={`/characters/${character.id}`}
             className="card"
+            to={`/characters/${character.id}`}
+            key={character.id}
           >
             <img src={character.image} alt={character.name} />
             <h3>{character.name}</h3>

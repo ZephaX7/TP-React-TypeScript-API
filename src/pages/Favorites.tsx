@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
-
-const favorites: { id: number; name: string }[] = []
+const favorites: { id: number; name: string }[] = [
+  { id: 1, name: 'Rick Sanchez' },
+]
 
 export default function Favorites() {
   return (
@@ -16,9 +16,6 @@ export default function Favorites() {
           {favorites.map((favorite) => (
             <div key={favorite.id} className="card">
               <h3>{favorite.name}</h3>
-              <Link to={`/characters/${favorite.id}`} className="button">
-                Voir le profil
-              </Link>
             </div>
           ))}
         </div>
