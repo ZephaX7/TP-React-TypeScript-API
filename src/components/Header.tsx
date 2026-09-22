@@ -9,6 +9,7 @@ export default function Header() {
         <NavLink to="/">Accueil</NavLink>
         <NavLink to="/characters">Personnages</NavLink>
         <NavLink to="/favorites">Favoris</NavLink>
+        <NavLink to="/suggestions">Suggestions de personnages</NavLink>
         <NavLink to="/about">A propos</NavLink>
       </nav>
     </header>
