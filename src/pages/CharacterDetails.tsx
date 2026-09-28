@@ -4,11 +4,16 @@ import ProfileCard from '../components/ProfileCard'
 import type { Character } from '../App'
 
 type Props = {
-  addFavorite: (character: Character) => void
+  favorites: Character[]
+  toggleFavorite: (character: Character) => void
 }
 
-export default function CharacterDetails({ addFavorite }: Props) {
+export default function CharacterDetails({
+  favorites,
+  toggleFavorite
+}: Props) {
   const { id } = useParams()
+
   const [character, setCharacter] = useState<Character | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,18 +24,25 @@ export default function CharacterDetails({ addFavorite }: Props) {
       .finally(() => setLoading(false))
   }, [id])
 
-  if (loading) return <p className="page">Chargement...</p>
+  if (loading) {
+    return <p className="page">Chargement...</p>
+  }
 
   if (!character) {
     return (
       <section className="page">
         <h2>Personnage introuvable</h2>
+
         <Link to="/characters" className="button">
           Retour
         </Link>
       </section>
     )
   }
+
+  const isFavorite = favorites.some(
+    favorite => favorite.id === character.id
+  )
 
   return (
     <section className="page detail">
@@ -43,9 +55,11 @@ export default function CharacterDetails({ addFavorite }: Props) {
 
         <button
           className="button"
-          onClick={() => addFavorite(character)}
+          onClick={() => toggleFavorite(character)}
         >
-          Ajouter aux favoris
+          {isFavorite
+            ? 'Retirer des favoris'
+            : 'Ajouter aux favoris'}
         </button>
       </div>
     </section>

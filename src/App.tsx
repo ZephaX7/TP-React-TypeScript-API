@@ -23,8 +23,16 @@ export type Character = {
 function App() {
   const [favorites, setFavorites] = useState<Character[]>([])
 
-  function addFavorite(character: Character) {
-    if (!favorites.some(favorite => favorite.id === character.id)) {
+  function toggleFavorite(character: Character) {
+    const exists = favorites.some(
+      favorite => favorite.id === character.id
+    )
+
+    if (exists) {
+      setFavorites(
+        favorites.filter(favorite => favorite.id !== character.id)
+      )
+    } else {
       setFavorites([...favorites, character])
     }
   }
@@ -36,11 +44,20 @@ function App() {
       <main className="page-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/characters" element={<Characters />} />
+
+          <Route
+            path="/characters"
+            element={<Characters />}
+          />
 
           <Route
             path="/characters/:id"
-            element={<CharacterDetails addFavorite={addFavorite} />}
+            element={
+              <CharacterDetails
+                favorites={favorites}
+                toggleFavorite={toggleFavorite}
+              />
+            }
           />
 
           <Route
@@ -48,9 +65,20 @@ function App() {
             element={<Favorites favorites={favorites} />}
           />
 
-          <Route path="/suggestions" element={<Suggestions />} />
-          <Route path="/about" element={<About />} />
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path="/suggestions"
+            element={<Suggestions />}
+          />
+
+          <Route
+            path="/about"
+            element={<About />}
+          />
+
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
         </Routes>
       </main>
     </div>
