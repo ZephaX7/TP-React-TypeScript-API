@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import ProfileCard from '../components/ProfileCard'
 import type { Character } from '../App'
 
 type Props = {
@@ -24,41 +25,28 @@ export default function CharacterDetails({ addFavorite }: Props) {
     return (
       <section className="page">
         <h2>Personnage introuvable</h2>
-        <Link to="/characters" className="button">Retour</Link>
+        <Link to="/characters" className="button">
+          Retour
+        </Link>
       </section>
     )
   }
 
   return (
     <section className="page detail">
-      <div className="detail-card">
-        <img src={character.image} alt={character.name} />
+      <ProfileCard character={character} />
 
-        <div>
-          <h2>{character.name}</h2>
-          <p>{character.species}</p>
+      <div className="detail-buttons">
+        <Link to="/characters" className="button">
+          Retour
+        </Link>
 
-          <div className="meta">
-            <span>{character.status}</span>
-            <span>{character.gender}</span>
-            <span>{character.origin.name}</span>
-          </div>
-
-          <p>Ce personnage vient de l’univers Rick et Morty.</p>
-
-          <div className="detail-buttons">
-            <Link to="/characters" className="button">
-              Retour
-            </Link>
-
-            <button
-              className="button"
-              onClick={() => addFavorite(character)}
-            >
-              Ajouter aux favoris
-            </button>
-          </div>
-        </div>
+        <button
+          className="button"
+          onClick={() => addFavorite(character)}
+        >
+          Ajouter aux favoris
+        </button>
       </div>
     </section>
   )
