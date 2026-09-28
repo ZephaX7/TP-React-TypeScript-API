@@ -56,7 +56,7 @@ export default function SuggestCharacter() {
       <form className="form" onSubmit={handleSubmit}>
 
         <div className="field">
-          <label>Nom</label>
+          <label>Nom : </label>
           <input
             name="name"
             value={values.name}
@@ -66,7 +66,7 @@ export default function SuggestCharacter() {
         </div>
 
         <div className="field">
-          <label>Espèce</label>
+          <label>Espèce : </label>
           <input
             name="species"
             value={values.species}
@@ -76,7 +76,7 @@ export default function SuggestCharacter() {
         </div>
 
         <div className="field">
-          <label>Statut</label>
+          <label>Statut :  </label>
           <select
             name="status"
             value={values.status}
@@ -90,7 +90,7 @@ export default function SuggestCharacter() {
         </div>
 
         <div className="field">
-          <label>Genre</label>
+          <label>Genre : </label>
           <select
             name="gender"
             value={values.gender}
@@ -100,7 +100,6 @@ export default function SuggestCharacter() {
             <option value="Male">Homme</option>
             <option value="Female">Femme</option>
             <option value="Genderless">Sans genre</option>
-            <option value="unknown">Inconnu</option>
           </select>
         </div>
 

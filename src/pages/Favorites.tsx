@@ -1,22 +1,29 @@
-const favorites: { id: number; name: string }[] = [
-  { id: 1, name: 'Rick Sanchez' },
-]
+import { Link } from 'react-router-dom'
+import type { Character } from '../App'
 
-export default function Favorites() {
+type Props = {
+  favorites: Character[]
+}
+
+export default function Favorites({ favorites }: Props) {
   return (
     <section className="page">
       <h2>Favoris</h2>
 
       {favorites.length === 0 ? (
-        <div className="empty-state">
-          <p>Tu n’as pas encore de favori.</p>
-        </div>
+        <p>Tu n’as pas encore de favori.</p>
       ) : (
         <div className="card-grid">
-          {favorites.map((favorite) => (
-            <div key={favorite.id} className="card">
-              <h3>{favorite.name}</h3>
-            </div>
+          {favorites.map(character => (
+            <Link
+              to={`/characters/${character.id}`}
+              className="card"
+              key={character.id}
+            >
+              <img src={character.image} alt={character.name} />
+              <h3>{character.name}</h3>
+              <p>{character.species}</p>
+            </Link>
           ))}
         </div>
       )}

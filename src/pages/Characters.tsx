@@ -12,35 +12,15 @@ export default function Characters() {
   const [characters, setCharacters] = useState<Character[]>([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
 
   useEffect(() => {
-    async function getCharacters() {
-      setLoading(true)
-      setError('')
+    setLoading(true)
 
-      try {
-        const response = await fetch(
-          `https://rickandmortyapi.com/api/character?name=${search}`
-        )
-
-        if (!response.ok) {
-          setCharacters([])
-          setLoading(false)
-          return
-        }
-
-        const data = await response.json()
-
-        setCharacters(data.results)
-      } catch {
-        setError('Erreur pendant le chargement')
-      }
-
-      setLoading(false)
-    }
-
-    getCharacters()
+    fetch(`https://rickandmortyapi.com/api/character?name=${search}`)
+      .then(res => res.ok ? res.json() : { results: [] })
+      .then(data => setCharacters(data.results))
+      .catch(() => setCharacters([]))
+      .finally(() => setLoading(false))
   }, [search])
 
   return (
@@ -49,22 +29,19 @@ export default function Characters() {
 
       <input
         className="search-input"
-        type="text"
         placeholder="Rechercher un personnage..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={e => setSearch(e.target.value)}
       />
 
       {loading && <p>Chargement...</p>}
-
-      {error && <p>{error}</p>}
 
       {!loading && characters.length === 0 && (
         <p>Aucun personnage trouvé.</p>
       )}
 
       <div className="card-grid">
-        {characters.map((character) => (
+        {characters.map(character => (
           <Link
             className="card"
             to={`/characters/${character.id}`}

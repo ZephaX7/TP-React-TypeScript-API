@@ -1,61 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import type { Character } from '../App'
 
-type Character = {
-  id: number
-  name: string
-  species: string
-  status: string
-  image: string
-  origin: { name: string }
-  gender: string
+type Props = {
+  addFavorite: (character: Character) => void
 }
 
-export default function CharacterDetails() {
+export default function CharacterDetails({ addFavorite }: Props) {
   const { id } = useParams()
   const [character, setCharacter] = useState<Character | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!id) return
-
-    const fetchCharacter = async () => {
-      try {
-        const response = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
-
-        if (!response.ok) {
-          throw new Error('Personnage introuvable')
-        }
-
-        const data = await response.json()
-        setCharacter(data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Une erreur est survenue')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchCharacter()
+    fetch(`https://rickandmortyapi.com/api/character/${id}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => setCharacter(data))
+      .finally(() => setLoading(false))
   }, [id])
 
-  if (loading) {
-    return (
-      <section className="page">
-        <h2>Détail du personnage</h2>
-        <p>Chargement...</p>
-      </section>
-    )
-  }
+  if (loading) return <p className="page">Chargement...</p>
 
-  if (error || !character) {
+  if (!character) {
     return (
       <section className="page">
         <h2>Personnage introuvable</h2>
-        <Link to="/characters" className="button">
-          Retour aux personnages
-        </Link>
+        <Link to="/characters" className="button">Retour</Link>
       </section>
     )
   }
@@ -75,14 +44,20 @@ export default function CharacterDetails() {
             <span>{character.origin.name}</span>
           </div>
 
-          <p>
-            Ce personnage vient de l’univers Rick et Morty et est affiché via
-            l’API officielle du projet.
-          </p>
+          <p>Ce personnage vient de l’univers Rick et Morty.</p>
 
-          <Link to="/characters" className="button">
-            Retour
-          </Link>
+          <div className="detail-buttons">
+            <Link to="/characters" className="button">
+              Retour
+            </Link>
+
+            <button
+              className="button"
+              onClick={() => addFavorite(character)}
+            >
+              Ajouter aux favoris
+            </button>
+          </div>
         </div>
       </div>
     </section>
